@@ -16,15 +16,29 @@ logging.basicConfig(
 
 logging.getLogger(__name__)
 
-app_config = configparser.ConfigParser()
-app_config.read("config.ini")
-bot_api_key = app_config.get("bot-configuration", "api_key")
+is_env = bool(os.environ.get("ENV", None))
+if is_env:
+    tg_app_id = int(os.environ.get("TG_APP_ID"))
+    tg_api_key = os.environ.get("TG_API_HASH")
+    bot_api_key = os.environ.get("TG_BOT_TOKEN")
 
-baboon = Client(
-    session_name="baboon",
-    bot_token=bot_api_key,
-    workers=200
-)
+    baboon = Client(
+        api_id=tg_app_id,
+        api_hash=tg_api_key,
+        session_name=":memory:",
+        bot_token=bot_api_key,
+        workers=200
+    )
+else:
+    app_config = configparser.ConfigParser()
+    app_config.read("config.ini")
+    bot_api_key = app_config.get("bot-configuration", "api_key")
+
+    baboon = Client(
+        session_name="baboon",
+        bot_token=bot_api_key,
+        workers=200
+    )
 
 image = ImageCaptcha(fonts=["font1.ttf"])
 
