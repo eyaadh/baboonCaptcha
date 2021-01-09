@@ -1,0 +1,7 @@
+async-lru==1.0.2
+captcha==0.3
+Pillow==8.1.0
+pyaes==1.6.1
+Pyrogram==1.1.9
+PySocks==1.7.1
+TgCrypto==1.2.2
