@@ -1,17 +1,19 @@
 Creating a Telegram Captcha bot:
-So I have lately been introduced to uCaptchaBot on telegram basically what it does is when a user joins a group
-it asks the user to solve a captcha, well its pretty useful to avoid bots, spam and automated accounts, u know what I mean.
-However I just couldnt sleep over it without doing something of my own, and here is how I created mine. we are going to
-call it baboon... well lets talk less and jump into it eh?
+- basic idea [x]
+- demonstration [x]
 
-Well that is pretty much it, now lets test before I explain breifly what I did,
+Follow up:
+- amend the callback data for buttons [x]
+- if one fails to solve the captcha remove the buttons [x]
+- give a time period for which one is allowed to solve the captcha [x]
 
-oh that works like a charm...
-
-now let me try breifly explain what it does...
-
-so thats pretty much it, now the question is it complete.. nope it is not, you have to be creative, take this
-as a foundation and put ur imagination to it, increase the number of buttons and the number of times a user
-can try before he is completely banned and stuff. Is it unbreakable? most likely nope!! you need a pretty damn
-good OCR to read those images programatically, but anyway u know what I mean... well thats all for todays video
-have a nice day :-)
+ok now I believe all those concerns we had is addressed, now let me also address one more thing..
+there is the difference of sky and ground in demonstrating an idea for you to pick up and a complete product
+I am open to all kind of criticism and my main aim in doing these videos are to share the knowledge I have
+gained, I am a self taught and my methods, my way of doing things might be a bit different to whats on text
+book but listen guys, when I will to do something I bloody make sure that its done... and being the cool
+guy of telegram doesnt really mean u pick point on everything, but yeah... you got to criticise however there
+are ways of doing things and you should have learnt the difference in demos and complete... even the literal
+word meaning... now that being said, SpechDi is an awesome developer I will leave a link to his git and
+youtube channel as well.. give him some support, and also subscribe if you are not and show him some love
+that being said thats all for this video... :-) have a nice day...

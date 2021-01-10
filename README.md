@@ -1,6 +1,8 @@
 # BaboonCaptcha:
 A telegram bot that requires new joiners to a chat group to be verified by issuing them a captcha to solve. Say no to bots and spammers basically.
 
+[Youtube Playlist](https://www.youtube.com/watch?v=Ze-QLZh53I0&list=PLApP3aDELGhtM6Zb7VF4jiO4T4hw99G1n)
+
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ## Cloning and Run:
