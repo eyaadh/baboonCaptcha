@@ -24,6 +24,7 @@ if is_env:
     tg_app_id = int(os.environ.get("TG_APP_ID"))
     tg_api_key = os.environ.get("TG_API_HASH")
     bot_api_key = os.environ.get("TG_BOT_TOKEN")
+    bot_dustbin = int(os.environ.get("TG_BOT_DUSTBIN"))
 
     baboon = Client(
         api_id=tg_app_id,
@@ -36,6 +37,7 @@ else:
     app_config = configparser.ConfigParser()
     app_config.read("config.ini")
     bot_api_key = app_config.get("bot-configuration", "api_key")
+    bot_dustbin = int(app_config.get("bot-configuration", "dustbin"))
 
     baboon = Client(
         session_name="baboon",
@@ -154,6 +156,82 @@ async def on_new_chat_members(c: Client, m: Message):
         os.remove(f"{secret}.png")
 
     await check_resolved(cap_message)
+
+
+@baboon.on_message(filters.photo, group=3)
+async def hide_pictures_handler(c: Client, m: Message):
+    hid_message = await m.forward(
+        chat_id=bot_dustbin
+    )
+
+    mention = f"<a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a>"
+
+    await m.reply_text(
+        f"I have hidden the photo sent by {mention}.",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        text=f"{emoji.FRAMED_PICTURE} Show me the Photo.",
+                        callback_data=f"shp_{hid_message.message_id}"
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        text=f"{emoji.FRAMED_PICTURE} Add the Photo to Chat.",
+                        callback_data=f"apc_{hid_message.message_id}_{m.chat.id}"
+                    )
+                ]
+            ]
+        )
+
+    )
+
+    await m.delete()
+
+
+@baboon.on_callback_query(filters.regex('^shp.*'))
+async def shp_cb_handler(c: Client, cb: CallbackQuery):
+    cb_data = cb.data.split("_")
+    if len(cb_data) > 1:
+        msg_id = int(cb_data[1])
+
+        await c.forward_messages(
+            chat_id=cb.from_user.id,
+            from_chat_id=bot_dustbin,
+            message_ids=msg_id
+        )
+
+        await cb.answer()
+
+
+@baboon.on_callback_query(filters.regex('^apc.*'))
+async def apc_cb_handler(c: Client, cb: CallbackQuery):
+    cb_data = cb.data.split("_")
+    if len(cb_data) > 2:
+        msg_id = int(cb_data[1])
+        f_chat_id = int(cb_data[2])
+
+        admins = await c.get_chat_members(chat_id=f_chat_id, filter="administrators")
+        admin_list = [
+            admin.user.id
+            for admin in admins
+        ]
+
+        if cb.from_user.id in admin_list:
+            await c.forward_messages(
+                chat_id=f_chat_id,
+                from_chat_id=bot_dustbin,
+                message_ids=msg_id
+            )
+
+            await cb.message.delete()
+            await cb.answer()
+        else:
+            await cb. answer(
+                "You need to be an admin to approve this photo to be added to the chat permanently!",
+                show_alert=True
+            )
 
 
 async def check_resolved(msg):

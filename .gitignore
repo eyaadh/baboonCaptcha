@@ -1,0 +1,10 @@
+venv/
+venv2/
+.idea/
+.env
+*.ini
+*.cfg
+*.session
+*.json
+*/__pycache__/
+/auditor/working_dir/tmp/
