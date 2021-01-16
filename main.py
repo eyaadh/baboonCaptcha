@@ -81,17 +81,16 @@ async def correct_captcha_cb_handler(c: Client, cb: CallbackQuery):
                 )
 
                 await cb.edit_message_reply_markup()
-
                 await cb.edit_message_text(
                     f"{mention} has successfully solved the Captcha and verified."
                 )
 
                 remove_captcha(cb.message.chat.id, cb.message.message_id)
+                await baboon.delete_messages(cb.message.chat.id, cb.message.message_id)
             else:
-                await cb.edit_message_reply_markup()
-                await c.edit_message_text(
+                await baboon.delete_messages(cb.message.chat.id, cb.message.message_id)
+                await baboon.send_message(
                     chat_id=cb.message.chat.id,
-                    message_id=cb.message.message_id,
                     text=f"{mention} has Failed to solve the Captcha."
                 )
 
@@ -246,16 +245,13 @@ async def check_resolved(msg):
             mention = f"<a href='tg://user?id={user.id}'>{user.first_name}</a>"
 
             try:
-                await baboon.edit_message_reply_markup(
-                    chat_id=msg.chat.id,
-                    message_id=msg.message_id
-                )
 
-                await baboon.edit_message_text(
+                await baboon.delete_messages(msg.chat.id, msg.message_id)
+                await baboon.send_message(
                     chat_id=msg.chat.id,
-                    message_id=msg.message_id,
                     text=f"{mention} has Failed to solve the Captcha within the given time period."
                 )
+
             except MessageNotModified as e:
                 pass
 
