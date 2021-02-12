@@ -24,7 +24,7 @@
         "TG_BOT_DUSTBIN": {
             "description": "Chat that saves the media for bot to refere later, as a string.",
             "required": true
-        ,
+        },
         "TG_APP_ID": {
             "description": "Get this value from https://my.telegram.org",
             "required": true
